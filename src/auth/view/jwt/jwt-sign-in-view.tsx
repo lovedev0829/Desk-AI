@@ -25,6 +25,9 @@ import { getErrorMessage } from '../../utils';
 import { FormHead } from '../../components/form-head';
 import { signInWithPassword } from '../../context/jwt';
 
+import { FormSocials } from '../../components/form-socials';
+import { FormDivider } from '../../components/form-divider';
+import { AnimateLogoRotate } from 'src/components/animate';
 // ----------------------------------------------------------------------
 
 export type SignInSchemaType = zod.infer<typeof SignInSchema>;
@@ -132,6 +135,8 @@ export function JwtSignInView() {
 
   return (
     <>
+      <AnimateLogoRotate sx={{ mb: 3, mx: 'auto' }} />
+
       <FormHead
         title="Sign in to your account"
         description={
@@ -142,24 +147,19 @@ export function JwtSignInView() {
             </Link>
           </>
         }
-        sx={{ textAlign: { xs: 'center', md: 'left' } }}
       />
-
-      <Alert severity="info" sx={{ mb: 3 }}>
-        Use <strong>{defaultValues.email}</strong>
-        {' with password '}
-        <strong>{defaultValues.password}</strong>
-      </Alert>
-
-      {!!errorMessage && (
-        <Alert severity="error" sx={{ mb: 3 }}>
-          {errorMessage}
-        </Alert>
-      )}
 
       <Form methods={methods} onSubmit={onSubmit}>
         {renderForm()}
       </Form>
+
+      <FormDivider />
+
+      <FormSocials
+        signInWithGoogle={() => {}}
+        singInWithGithub={() => {}}
+        signInWithTwitter={() => {}}
+      />
     </>
   );
 }

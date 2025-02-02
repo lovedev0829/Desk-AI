@@ -43,12 +43,31 @@ export const paths = {
   // DASHBOARD
   dashboard: {
     root: ROOTS.DASHBOARD,
-    two: `${ROOTS.DASHBOARD}/two`,
-    three: `${ROOTS.DASHBOARD}/three`,
+    chat: `${ROOTS.DASHBOARD}/chat`,
+    calendar: `${ROOTS.DASHBOARD}/calendar`,
+    permission: `${ROOTS.DASHBOARD}/permission`,
     group: {
       root: `${ROOTS.DASHBOARD}/group`,
       five: `${ROOTS.DASHBOARD}/group/five`,
       six: `${ROOTS.DASHBOARD}/group/six`,
+    },
+    general: {
+      app: `${ROOTS.DASHBOARD}/app`,
+      ecommerce: `${ROOTS.DASHBOARD}/ecommerce`,
+      analytics: `${ROOTS.DASHBOARD}/analytics`,
+      banking: `${ROOTS.DASHBOARD}/banking`,
+      booking: `${ROOTS.DASHBOARD}/booking`,
+      file: `${ROOTS.DASHBOARD}/file`,
+      course: `${ROOTS.DASHBOARD}/course`,
+    },
+    user: {
+      root: `${ROOTS.DASHBOARD}/user`,
+      new: `${ROOTS.DASHBOARD}/user/new`,
+      list: `${ROOTS.DASHBOARD}/user/list`,
+      cards: `${ROOTS.DASHBOARD}/user/cards`,
+      profile: `${ROOTS.DASHBOARD}/user/profile`,
+      account: `${ROOTS.DASHBOARD}/user/account`,
+      edit: (id: string) => `${ROOTS.DASHBOARD}/user/${id}/edit`,
     },
   },
 };

@@ -25,6 +25,10 @@ import { useAuthContext } from '../../hooks';
 import { getErrorMessage } from '../../utils';
 import { FormHead } from '../../components/form-head';
 import { SignUpTerms } from '../../components/sign-up-terms';
+import { AnimateLogoRotate } from 'src/components/animate';
+import { FormSocials } from '../../components/form-socials';
+import { FormDivider } from '../../components/form-divider';
+
 
 // ----------------------------------------------------------------------
 
@@ -143,6 +147,8 @@ export function JwtSignUpView() {
 
   return (
     <>
+      <AnimateLogoRotate sx={{ mb: 3, mx: 'auto' }} />
+
       <FormHead
         title="Get started absolutely free"
         description={
@@ -153,20 +159,21 @@ export function JwtSignUpView() {
             </Link>
           </>
         }
-        sx={{ textAlign: { xs: 'center', md: 'left' } }}
       />
-
-      {!!errorMessage && (
-        <Alert severity="error" sx={{ mb: 3 }}>
-          {errorMessage}
-        </Alert>
-      )}
 
       <Form methods={methods} onSubmit={onSubmit}>
         {renderForm()}
       </Form>
 
       <SignUpTerms />
+
+      <FormDivider />
+
+      <FormSocials
+        signInWithGoogle={() => {}}
+        singInWithGithub={() => {}}
+        signInWithTwitter={() => {}}
+      />
     </>
   );
 }

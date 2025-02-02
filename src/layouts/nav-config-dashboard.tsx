@@ -51,14 +51,7 @@ export const navData: NavSectionProps['data'] = [
   {
     subheader: 'Overview',
     items: [
-      {
-        title: 'One',
-        path: paths.dashboard.root,
-        icon: ICONS.dashboard,
-        info: <Label>v{CONFIG.appVersion}</Label>,
-      },
-      { title: 'Two', path: paths.dashboard.two, icon: ICONS.ecommerce },
-      { title: 'Three', path: paths.dashboard.three, icon: ICONS.analytics },
+      { title: 'Analytics', path: paths.dashboard.general.analytics, icon: ICONS.analytics },
     ],
   },
   /**
@@ -68,14 +61,30 @@ export const navData: NavSectionProps['data'] = [
     subheader: 'Management',
     items: [
       {
-        title: 'Group',
+        title: 'User',
         path: paths.dashboard.group.root,
         icon: ICONS.user,
         children: [
-          { title: 'Four', path: paths.dashboard.group.root },
-          { title: 'Five', path: paths.dashboard.group.five },
-          { title: 'Six', path: paths.dashboard.group.six },
+          { title: 'Profile', path: paths.dashboard.group.root },
+          { title: 'List', path: paths.dashboard.group.five },
+          { title: 'Create', path: paths.dashboard.group.six },
+          { title: 'Edit', path: paths.dashboard.group.six },
+          { title: 'Account', path: paths.dashboard.group.six },
         ],
+      },
+      { title: 'Chat', path: paths.dashboard.chat, icon: ICONS.chat },
+      { title: 'Calendar', path: paths.dashboard.calendar, icon: ICONS.calendar },
+      {
+        // default roles : All roles can see this entry.
+        // roles: ['user'] Only users can see this item.
+        // roles: ['admin'] Only admin can see this item.
+        // roles: ['admin', 'manager'] Only admin/manager can see this item.
+        // Reference from 'src/guards/RoleBasedGuard'.
+        title: 'Permission',
+        path: paths.dashboard.permission,
+        icon: ICONS.lock,
+        roles: ['admin', 'manager'],
+        caption: 'Only admin can see this item',
       },
     ],
   },
