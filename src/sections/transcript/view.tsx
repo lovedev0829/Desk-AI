@@ -3,16 +3,16 @@
 import type { Theme, SxProps } from '@mui/material/styles';
 
 import Typography from '@mui/material/Typography';
-
 import { DashboardContent } from 'src/layouts/dashboard';
-import { useCallback, useState } from 'react';
-import { FormGrid, FormActions, FieldContainer, componentBoxStyles } from './components';
+import { FormGrid, FormActions, FieldContainer } from './components';
 import MenuItem from '@mui/material/MenuItem';
 import { Form, Field } from 'src/components/hook-form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TranscriptSchema, TranscriptSchemaType } from './components/schema';
 import { mimeTypes } from 'src/_mock/_map/mimeTypes';
+import { transcribe } from "src/api/transcribe"
+
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -50,7 +50,6 @@ export function TranscriptView({ title = 'Blank', sx }: Props) {
     defaultValues,
   });
 
-
   const {
     reset,
     setValue,
@@ -58,11 +57,20 @@ export function TranscriptView({ title = 'Blank', sx }: Props) {
     formState: { isSubmitting, errors },
   } = methods;
   
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async (data: any) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      
+      const formData = new FormData();
+      
+      formData.append('file', data.file);
+      formData.append('speakers', data.speakers);
+      formData.append('lang', data.lang);
+      
+      await transcribe?.(formData).then((data: any) => {
+        console.log("transcribe response ->>>>>>>>>>", data);
+      });
+
       reset();
-      console.info('DATA', data);
     } catch (error) {
       console.error(error);
     }
