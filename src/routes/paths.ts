@@ -55,6 +55,7 @@ export const paths = {
     chat: `${ROOTS.DASHBOARD}/chat`,
     calendar: `${ROOTS.DASHBOARD}/calendar`,
     permission: `${ROOTS.DASHBOARD}/permission`,
+    transcript: `${ROOTS.DASHBOARD}/transcript`,
     group: {
       root: `${ROOTS.DASHBOARD}/group`,
       five: `${ROOTS.DASHBOARD}/group/five`,

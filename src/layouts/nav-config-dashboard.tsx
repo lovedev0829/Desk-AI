@@ -75,6 +75,7 @@ export const navData: NavSectionProps['data'] = [
       },
       { title: 'Chat', path: paths.dashboard.chat, icon: ICONS.chat },
       { title: 'Calendar', path: paths.dashboard.calendar, icon: ICONS.calendar },
+      { title: 'Transcript', path: paths.dashboard.transcript, icon: ICONS.file },
       {
         // default roles : All roles can see this entry.
         // roles: ['user'] Only users can see this item.
