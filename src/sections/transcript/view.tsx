@@ -13,6 +13,10 @@ import { mimeTypes } from 'src/_mock/_map/mimeTypes';
 import { transcribe } from 'src/api/transcribe';
 import { useState } from 'react';
 import TranscribeTextView from './components/textview';
+import AddLinkIcon from '@mui/icons-material/AddLink';
+import Button from '@mui/material/Button';
+import TranscribeAddLinkModal from './components/modal';
+
 import type { TranscriptionResponse } from 'src/api/transcribe';
 
 // ----------------------------------------------------------------------
@@ -45,7 +49,9 @@ const defaultValues: TranscriptSchemaType = {
 };
 
 export function TranscriptView({ title = 'Blank', sx }: Props) {
+
   const [transcription, setTranscription] = useState<TranscriptionResponse | null>(null);
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   const methods = useForm<TranscriptSchemaType>({
     resolver: zodResolver(TranscriptSchema),
@@ -89,10 +95,13 @@ export function TranscriptView({ title = 'Blank', sx }: Props) {
       />
       <FormGrid>
         <FieldContainer label="Audio / Video File">
+          <Button color="inherit" sx={{ width: 25}} onClick={ () => setOpenModal(!openModal)}>
+            <AddLinkIcon />
+          </Button>
           <Field.Upload
             name="file"
             accept={{ mimeTypes }}
-            maxSize={3145728}
+            
             onDelete={() => setValue('file', null, { shouldValidate: true })}
           />
         </FieldContainer>
@@ -125,11 +134,10 @@ export function TranscriptView({ title = 'Blank', sx }: Props) {
   return (
     <DashboardContent maxWidth="xl">
       <Typography variant="h4">{title}</Typography>
-      {transcription ? (
-        <TranscribeTextView transcription={transcription} />
-      ) : (
-        renderTranscriptUpload()
-      )}
+
+      {transcription ? <TranscribeTextView transcription={transcription} /> : renderTranscriptUpload()}
+
+      <TranscribeAddLinkModal open={openModal} setOpen={setOpenModal} sx={sx} />
     </DashboardContent>
   );
 }

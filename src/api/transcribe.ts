@@ -9,6 +9,7 @@ interface Segment {
 export interface TranscriptionResponse {
   filename: string;
   audio_data: string;
+  dateTime: string;
   segments: Segment[];
 }
 
@@ -23,6 +24,7 @@ export async function transcribe(params: FormData): Promise<TranscriptionRespons
       filename: data.filename,
       audio_data: data.audio_data,
       segments: data.segments,
+      dateTime: data.dateTime
     };
 
   } catch (error: any) {

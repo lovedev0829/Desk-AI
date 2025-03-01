@@ -40,7 +40,7 @@ export default function TranscribeTextView({
 
   const data = transcription;
   const [toggleTimeStamp, setToggleTimeStamp] = useState(true);
-  const transcriptPanel = useRef<HTMLElement>(null);
+  const transcriptPanel = useRef<HTMLDivElement>(null);
 
   const audioSrc = data.audio_data
     ? `data:audio/mp3;base64,${data.audio_data}`
@@ -98,14 +98,14 @@ export default function TranscribeTextView({
 
   return (
     <Box sx={{ display: 'flex', gap: 2, p: 2, ...sx }}>
-      <Card sx={{ maxWidth: 900, margin: 'auto', mt: 4 }} ref={transcriptPanel}>
+      <Card component="div" sx={{ maxWidth: 900, margin: 'auto', mt: 4 }} ref={transcriptPanel}>
         <CardContent>
           <Typography variant="h5" gutterBottom>
-            {data.filename}
+                {data.filename}
           </Typography>
 
           <Typography variant="body2" color="text.secondary" gutterBottom>
-            Feb 27, 2025, 8:52 PM
+            {data.dateTime}
           </Typography>
 
           <Box sx={{ mt: 2 }}>
