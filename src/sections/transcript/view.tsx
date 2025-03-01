@@ -1,7 +1,6 @@
 'use client';
 
 import type { Theme, SxProps } from '@mui/material/styles';
-
 import Typography from '@mui/material/Typography';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { FormGrid, FormActions, FieldContainer } from './components';
@@ -11,7 +10,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TranscriptSchema, TranscriptSchemaType } from './components/schema';
 import { mimeTypes } from 'src/_mock/_map/mimeTypes';
-import { transcribe } from "src/api/transcribe"
+import { transcribe } from 'src/api/transcribe';
+import { useState } from 'react';
+import TranscribeTextView from './components/textview';
+import type { TranscriptionResponse } from 'src/api/transcribe';
 
 // ----------------------------------------------------------------------
 
@@ -36,14 +38,14 @@ const LANGS = [
   { value: 'en', label: 'English' }
 ];
 
-
 const defaultValues: TranscriptSchemaType = {
   file: null,
   speakers: '0',
-  lang:'he'
+  lang: 'en'
 };
 
 export function TranscriptView({ title = 'Blank', sx }: Props) {
+  const [transcription, setTranscription] = useState<TranscriptionResponse | null>(null);
 
   const methods = useForm<TranscriptSchemaType>({
     resolver: zodResolver(TranscriptSchema),
@@ -56,18 +58,19 @@ export function TranscriptView({ title = 'Blank', sx }: Props) {
     handleSubmit,
     formState: { isSubmitting, errors },
   } = methods;
-  
+
   const onSubmit = handleSubmit(async (data: any) => {
     try {
-      
       const formData = new FormData();
-      
       formData.append('file', data.file);
       formData.append('speakers', data.speakers);
       formData.append('lang', data.lang);
-      
-      await transcribe?.(formData).then((data: any) => {
-        console.log("transcribe response ->>>>>>>>>>", data);
+
+      await transcribe(formData).then((data: TranscriptionResponse) => {
+        if (data.segments.length > 0) {
+          console.log(data)
+          setTranscription(data);
+        }
       });
 
       reset();
@@ -76,25 +79,22 @@ export function TranscriptView({ title = 'Blank', sx }: Props) {
     }
   });
 
-
-  const renderContent = () => (
+  const renderTranscriptUpload = () => (
     <Form methods={methods} onSubmit={onSubmit}>
-
-    <FormActions
-      title='TRANSCRIBE'
-      loading={isSubmitting}
-      disabled={Object.keys(errors).length === 0}
-      onReset={() => reset()}
-    />
+      <FormActions
+        title="TRANSCRIBE"
+        loading={isSubmitting}
+        disabled={Object.keys(errors).length === 0}
+        onReset={() => reset()}
+      />
       <FormGrid>
         <FieldContainer label="Audio / Video File">
           <Field.Upload
-              name="file"
-              accept={{mimeTypes}}
-              maxSize={3145728}
-              onDelete={() => setValue('file', null, { shouldValidate: true })}
-            />
-
+            name="file"
+            accept={{ mimeTypes }}
+            maxSize={3145728}
+            onDelete={() => setValue('file', null, { shouldValidate: true })}
+          />
         </FieldContainer>
       </FormGrid>
       <FormGrid>
@@ -108,10 +108,8 @@ export function TranscriptView({ title = 'Blank', sx }: Props) {
           </Field.Select>
         </FieldContainer>
       </FormGrid>
-     
       <FormGrid>
         <FieldContainer label="Speaker">
-
           <Field.Select name="speakers" label="Speakers">
             {SPEAKERS.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -126,8 +124,12 @@ export function TranscriptView({ title = 'Blank', sx }: Props) {
 
   return (
     <DashboardContent maxWidth="xl">
-      <Typography variant="h4"> {title} </Typography>
-      {renderContent()}
+      <Typography variant="h4">{title}</Typography>
+      {transcription ? (
+        <TranscribeTextView transcription={transcription} />
+      ) : (
+        renderTranscriptUpload()
+      )}
     </DashboardContent>
   );
 }

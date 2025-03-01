@@ -1,20 +1,31 @@
-import axios, { endpoints } from 'src/utils/axios'; // Adjust the import according to your structure
+import axios, { endpoints } from 'src/utils/axios'; // Adjust the import path as needed
 
-interface TranscriptionResponse {
-  transcribe: any; // Replace 'any' with a more specific type if possible
+interface Segment {
+  start: number;
+  end: number;
+  text: string;
+}
+
+export interface TranscriptionResponse {
+  filename: string;
+  audio_data: string;
+  segments: Segment[];
 }
 
 export async function transcribe(params: FormData): Promise<TranscriptionResponse> {
-  
-  console.log("Transcribe API endpoint", params);
-
   const URL = endpoints.transcribe.analyze;
 
   try {
-    const response = await axios.post<TranscriptionResponse>(URL, params);
-    return { transcribe: response.data.transcribe }; // Assuming the response has a 'transcribe' field
+
+    const { data } = await axios.post<TranscriptionResponse>(URL, params);
+
+    return {
+      filename: data.filename,
+      audio_data: data.audio_data,
+      segments: data.segments,
+    };
+
   } catch (error: any) {
-    // You can specify the type of error if needed
-    throw new Error((error.response && error.response.data) || 'Failed to transcribe');
+    throw new Error(error.response?.data || 'Failed to transcribe');
   }
 }
