@@ -16,7 +16,6 @@ import TranscribeTextView from './components/textview';
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import Button from '@mui/material/Button';
 import TranscribeAddLinkModal from './components/modal';
-
 import type { TranscriptionResponse } from 'src/api/transcribe';
 
 // ----------------------------------------------------------------------
@@ -86,49 +85,49 @@ export function TranscriptView({ title = 'Blank', sx }: Props) {
   });
 
   const renderTranscriptUpload = () => (
-    <Form methods={methods} onSubmit={onSubmit}>
-      <FormActions
-        title="TRANSCRIBE"
-        loading={isSubmitting}
-        disabled={Object.keys(errors).length === 0}
-        onReset={() => reset()}
-      />
-      <FormGrid>
-        <FieldContainer label="Audio / Video File">
-          <Button color="inherit" sx={{ width: 25}} onClick={ () => setOpenModal(!openModal)}>
-            <AddLinkIcon />
-          </Button>
-          <Field.Upload
-            name="file"
-            accept={{ mimeTypes }}
-            
-            onDelete={() => setValue('file', null, { shouldValidate: true })}
-          />
-        </FieldContainer>
-      </FormGrid>
-      <FormGrid>
-        <FieldContainer label="Audio Language">
-          <Field.Select name="lang" label="Audio Language">
-            {LANGS.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </Field.Select>
-        </FieldContainer>
-      </FormGrid>
-      <FormGrid>
-        <FieldContainer label="Speaker">
-          <Field.Select name="speakers" label="Speakers">
-            {SPEAKERS.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </Field.Select>
-        </FieldContainer>
-      </FormGrid>
-    </Form>
+      <Form methods={methods} onSubmit={onSubmit}>
+        <FormActions
+          title="TRANSCRIBE"
+          loading={isSubmitting}
+          disabled={Object.keys(errors).length === 0}
+          onReset={() => reset()}
+        />
+        <FormGrid>
+          <FieldContainer label="Audio / Video File">
+            <Button color="inherit" sx={{ width: 25}} onClick={ () => setOpenModal(!openModal)}>
+              <AddLinkIcon />
+            </Button>
+            <Field.Upload
+              name="file"
+              accept={{ mimeTypes }}
+              sx={{width: "100%"}}
+              onDelete={() => setValue('file', null, { shouldValidate: true })}
+            />
+          </FieldContainer>
+        </FormGrid>
+        <FormGrid>
+          <FieldContainer label="Audio Language">
+            <Field.Select name="lang" label="Audio Language">
+              {LANGS.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Field.Select>
+          </FieldContainer>
+        </FormGrid>
+        <FormGrid>
+          <FieldContainer label="Speaker">
+            <Field.Select name="speakers" label="Speakers">
+              {SPEAKERS.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Field.Select>
+          </FieldContainer>
+        </FormGrid>
+      </Form>
   );
 
   return (
