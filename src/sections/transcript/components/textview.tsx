@@ -198,7 +198,7 @@ export default function TranscribeTextView({
             </ListItemButton>
           </ListItem>
         </List>
-  
+
         {/* Advanced Export Section */}
         <Typography variant="h6" sx={{ mt: 3 }} gutterBottom>
           Advanced Export
@@ -219,8 +219,6 @@ export default function TranscribeTextView({
               />
             </ListItemButton>
           </ListItem>
-          
-          {/* ChatGPT Button */}
           <ListItem disablePadding>
             <ListItemButton>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" id="chatgpt" style={{ width: 25, marginRight: 7 }}>
@@ -235,8 +233,6 @@ export default function TranscribeTextView({
                 </Box>
             </ListItemButton>
           </ListItem>
-  
-          {/* Translate Button */}
           <ListItem disablePadding>
             <ListItemButton>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="google-translate" style={{ width: 25, marginRight: 7 }}>
@@ -254,14 +250,12 @@ export default function TranscribeTextView({
             </Box>
             </ListItemButton>
           </ListItem>
-            {/* Download Audio */}
             <ListItem disablePadding>
                 <ListItemButton>
                 <ModeEditIcon sx={{ fontSize: 27, mr: 1 }} />
                 <ListItemText primary="Edit Transcript" />
                 </ListItemButton>
           </ListItem>
-          {/* Download Audio */}
           <ListItem disablePadding>
             <ListItemButton>
               <CloudDownloadIcon sx={{ fontSize: 27, mr: 1 }} />
@@ -272,6 +266,4 @@ export default function TranscribeTextView({
       </Box>
     </Box>
   );
-  
-  
 }

@@ -11,7 +11,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 export const componentBoxStyles: SxProps<Theme> = {
   flexDirection: 'column',
   alignItems: 'unset',
-  justifyContent: 'flex-start',
+  justifyContent: 'center',
 };
 
 // ----------------------------------------------------------------------
@@ -27,19 +27,17 @@ export function FormActions({ sx, disabled, onReset, loading, ...other }: FormAc
     <Box
       sx={[
         () => ({
+          mt:2,
           mb: 3,
           gap: 2,
           display: 'flex',
-          justifyContent: 'flex-end',
+          justifyContent: 'left',
         }),
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
       {...other}
     >
-      <Button color="error" size="large" variant="soft" disabled={disabled} onClick={onReset}>
-        Reset
-      </Button>
-      <LoadingButton size="large" type="submit" variant="contained" loading={loading}>
+      <LoadingButton size="large" type="submit" variant="contained" loading={loading} color="primary">
         TRANSCRIBE
       </LoadingButton>
     </Box>
@@ -53,8 +51,8 @@ export function FormGrid({ sx, children, ...other }: BoxProps) {
     <Box
       sx={[
         () => ({
-          rowGap: 5,
-          columnGap: 3,
+          rowGap: 6,
+          columnGap: 5,
           display: 'grid',
           gridTemplateColumns: {
             xs: 'repeat(1, 1fr)',
