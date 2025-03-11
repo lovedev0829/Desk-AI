@@ -1,17 +1,18 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import type { Theme, SxProps } from "@mui/material/styles";
 import {
   Modal,
   Box,
   Typography,
   TextField,
-  IconButton,
+  IconButton
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import AddLinkIcon from "@mui/icons-material/AddLink";
-import Grid from "@mui/material/Grid2";
+import AddLinkIcon from '@mui/icons-material/AddLink';
+import Grid from '@mui/material/Grid2';
+import LoadingButton from "@mui/lab/LoadingButton";
 import {
   GithubIcon,
   GoogleIcon,
@@ -19,8 +20,8 @@ import {
   FacebookIcon,
   LinkedinIcon,
   InstagramIcon,
-} from "src/assets/icons";
-import LoadingButton from "@mui/lab/LoadingButton";
+} from 'src/assets/icons';
+import { transcribeImportFile } from "src/api/transcribe";
 
 interface TranscribeAddLinkModalProps {
   open: boolean;
@@ -35,45 +36,31 @@ export default function TranscribeAddLinkModal({
   handleFileImport,
   sx,
 }: TranscribeAddLinkModalProps) {
-  const [mediaLink, setMediaLink] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  const handleClose = useCallback(() => {
-    setMediaLink("");
-    setOpen(false);
-  }, [setOpen]);
+  const [mediaLink, setMediaLink] = useState<string>("");
+  const handleClose = () => setOpen(false);
+  const [loading, setLoading] = useState<boolean>(false)
 
-  const extractFilename = (url: string) => {
-    try {
-      const decodedUrl = decodeURIComponent(url);
-      return decodedUrl.split("/").pop()?.split("?")[0] || "downloaded_file";
-    } catch {
-      return "downloaded_file";
-    }
-  };
+const handleImport = async () => {
 
-  const handleImport = async () => {
-    if (!mediaLink.trim()) return;
+  if (mediaLink.trim() === "") return;
 
-    try {
-      setLoading(true);
+  try {
+    setLoading(true)
+    await transcribeImportFile(mediaLink).then((improtedFile: File) => {
+        console.log("transcribeImportFile", improtedFile)
+        setLoading(false)
+        handleFileImport(improtedFile);
+        setMediaLink("");
+        handleClose();
+    });
+  
 
-      const response = await fetch(mediaLink);
-      if (!response.ok) throw new Error(`Failed to fetch file: ${response.statusText}`);
+  } catch (error) {
+    console.error("Error downloading the file:", error);
+  }
 
-      const blob = await response.blob();
-      const filename = extractFilename(mediaLink);
-      const file = new File([blob], filename, { type: blob.type });
-
-      handleFileImport(file);
-      handleClose();
-    } catch (error) {
-      console.error("Error downloading the file:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+};
   return (
     <Modal open={open} onClose={handleClose} aria-labelledby="modal-title">
       <Box
@@ -86,7 +73,6 @@ export default function TranscribeAddLinkModal({
           mx: "auto",
           mt: "10%",
           textAlign: "center",
-          position: "relative",
           ...sx,
         }}
       >
@@ -94,32 +80,30 @@ export default function TranscribeAddLinkModal({
         <IconButton
           onClick={handleClose}
           sx={{ position: "absolute", top: 8, right: 8 }}
-          aria-label="Close modal"
         >
           <CloseIcon />
         </IconButton>
 
         {/* Modal Title */}
-        <Grid container sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
-          <AddLinkIcon sx={{ mr: 2 }} />
-          <Typography variant="h6" id="modal-title" gutterBottom>
-            Import from Link
-          </Typography>
+        <Grid container size={{ xs: 2 }} sx={{ display: "flex", justifyContent:"center", mb: 2 }}>
+            <AddLinkIcon sx={{mr: 2 }}/> 
+            <Typography variant="h6" id="modal-title" gutterBottom>
+                Import from Link
+            </Typography>
         </Grid>
 
-        {/* Supported Platforms Icons */}
-        <Box sx={{ gap: 2, display: "flex", flexWrap: "wrap", justifyContent: "center", mb: 2 }}>
-          {[GoogleIcon, InstagramIcon, FacebookIcon, LinkedinIcon, TwitterIcon, GithubIcon].map(
-            (Icon, index) => (
-              <Icon key={index} sx={{ width: 24 }} />
-            )
-          )}
+        <Box sx={{ gap: 2, display: 'flex', flexWrap: 'wrap', justifyContent: "center", mb:2 }}>
+            <GoogleIcon sx={{ width: 24 }} />
+            <InstagramIcon sx={{ width: 24 }} />
+            <FacebookIcon sx={{ width: 24 }} />
+            <LinkedinIcon sx={{ width: 24 }} />
+            <TwitterIcon sx={{ width: 24 }} />
+            <GithubIcon sx={{ width: 24 }} />
         </Box>
-
+        
         {/* Description */}
         <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-          Import audio and video from YouTube, Dropbox, Google Drive, Facebook, Vimeo, X, and more.
-          The link must be publicly accessible.
+                Import audio and video from YouTube, Dropbox, Google Drive, Facebook, Vimeo, X, audio/video URL, and dozens more platforms and services. The link must be publicly accessible.
         </Typography>
 
         {/* Input Field */}
@@ -132,16 +116,14 @@ export default function TranscribeAddLinkModal({
           onChange={(e) => setMediaLink(e.target.value)}
           sx={{ mb: 2 }}
         />
-
-        {/* Import Button */}
         <LoadingButton
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={handleImport}
-          disabled={!mediaLink.trim()}
-          loading={loading}
-        >
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={handleImport}
+            disabled={!mediaLink.trim()}
+            loading={loading}
+          >
           + Import
         </LoadingButton>
       </Box>

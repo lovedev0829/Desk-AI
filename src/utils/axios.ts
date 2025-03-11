@@ -28,6 +28,7 @@ export const fetcher = async <T>(args: string | [string, AxiosRequestConfig]): P
 
 export const endpoints = {
   transcribe: {
-    analyze: '/api/transcribe',
+    audio_to_text: '/api/transcribe/audio_to_text',
+    import_file: '/api/transcribe/import_file',
   },
 };

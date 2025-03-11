@@ -67,6 +67,7 @@ export function TranscriptView({ title = 'Blank', sx }: Props) {
 
   const onSubmit = handleSubmit(async (data: any) => {
     try {
+
       const formData = new FormData();
       formData.append('file', data.file);
       formData.append('speakers', data.speakers);

@@ -59,7 +59,7 @@ export default function TranscribeTextView({
   const handleDownloadPDF = async (): Promise<void> => {
     if (transcriptPanel.current) {
       const doc = new jsPDF();
-      // Use jsPDF's html method to convert the panel HTML to PDF.
+
       await doc.html(transcriptPanel.current.innerText, {
         callback: (doc) => {
           doc.save(`${data.filename}_transcript.pdf`);
