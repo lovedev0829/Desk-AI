@@ -21,6 +21,10 @@ import Checkbox from '@mui/material/Checkbox';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { jsPDF } from 'jspdf';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 // Helper function to format seconds into mm:ss
 function formatTime(seconds: number): string {
@@ -34,19 +38,24 @@ interface TranscribeTextViewProps {
   sx?: SxProps<Theme>;
 }
 
+const LANGS = [
+  { value: '2', label: 'English' },
+  { value: '3', label: 'Hebrew' },
+];
+
 export default function TranscribeTextView({
   transcription,
   sx,
 }: TranscribeTextViewProps) {
 
   const data = transcription;
-  const [toggleTimeStamp, setToggleTimeStamp] = useState(true);
   const transcriptPanel = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
-
+  const [toggleTimeStamp, setToggleTimeStamp] = useState(true);
   const audioSrc = data.audio_data
     ? `data:audio/mp3;base64,${data.audio_data}`
     : `/audio/${data.filename}`;
+
 
   const handleSegmentClick = (start: number) => {
     if (audioRef.current) {
@@ -54,6 +63,15 @@ export default function TranscribeTextView({
       audioRef.current.play();
     }
   };
+
+  const handleDownloadAudio = () => {
+      const link = document.createElement('a');
+      link.href = audioSrc;
+      link.download = data.filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  }
 
   // Download PDF from the HTML content of the transcript panel.
   const handleDownloadPDF = async (): Promise<void> => {
@@ -97,9 +115,9 @@ export default function TranscribeTextView({
   };
 
   return (
-    <Box sx={{ display: 'flex', gap: 2, p: 2, ...sx }}>
+    <Box sx={{ display: 'flex', gap: 1, p: 2, ...sx}}>
       {/* Transcription Card */}
-      <Card component="div" sx={{ maxWidth: 900, margin: 'auto', mt: 4 }}>
+      <Card component="div" sx={{ maxWidth: 1000, margin: 'auto', mt: 4,  ml: 1  }}>
         <CardContent ref={transcriptPanel}>
           <Typography variant="h5" gutterBottom>
             {data.filename}
@@ -143,29 +161,40 @@ export default function TranscribeTextView({
         sx={{
           position: 'fixed',
           bottom: 0,
-          left: 0,
+          left: 5,
           width: '100%',
           backgroundColor: 'white',
           boxShadow: '0 -2px 10px rgba(0,0,0,0.1)',
           zIndex: 1000,
           p: 2,
+          gap:10,
           display: 'flex',
           justifyContent: 'center',
         }}
       >
-        <audio controls src={audioSrc} style={{ width: '60%' }} ref={audioRef}>
+        <audio controls src={audioSrc} style={{ width: '60%', marginLeft:300 }} ref={audioRef}>
           Your browser does not support the audio element.
         </audio>
+        <FormControl  style={{ width: '10%' }} >
+          <InputLabel id="lang-select-label">Languages</InputLabel>
+          <Select name="lang" label="Languages"  labelId="lang-select-label">
+            {LANGS.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Box>
   
       {/* Floating Side Menu */}
       <Box
         sx={{
           position: 'fixed',
-          right: 20,
-          top: '48%',
+          right: 45,
+          top: '46%',
           transform: 'translateY(-50%)',
-          width: 300,
+          width: 350,
           backgroundColor: 'white',
           boxShadow: '0 0 10px rgba(0,0,0,0.1)',
           borderRadius: 2,
@@ -257,7 +286,7 @@ export default function TranscribeTextView({
                 </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={handleDownloadAudio}>
               <CloudDownloadIcon sx={{ fontSize: 27, mr: 1 }} />
               <ListItemText primary="Download Audio" />
             </ListItemButton>

@@ -46,6 +46,7 @@ const handleImport = async () => {
   if (mediaLink.trim() === "") return;
 
   try {
+    
     setLoading(true)
     await transcribeImportFile(mediaLink).then((improtedFile: File) => {
         console.log("transcribeImportFile", improtedFile)
@@ -54,7 +55,6 @@ const handleImport = async () => {
         setMediaLink("");
         handleClose();
     });
-  
 
   } catch (error) {
     console.error("Error downloading the file:", error);
