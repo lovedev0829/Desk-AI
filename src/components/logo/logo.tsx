@@ -32,7 +32,7 @@ export const Logo = forwardRef<HTMLAnchorElement, LogoProps>((props, ref) => {
   const singleLogo = (
     <img
       alt="Single logo"
-      src={`/logo/Maariv.svg.png`}
+      src={`/logo/logo-single.png`}
       width="100%"
       height="100%"
     />
@@ -41,7 +41,7 @@ export const Logo = forwardRef<HTMLAnchorElement, LogoProps>((props, ref) => {
   const fullLogo = (
     <img
       alt="Full logo"
-      src={`/logo/Maariv.svg.png`}
+      src={`/logo/logo-full.png`}
       width="100%"
       height="100%"
     />
@@ -58,9 +58,9 @@ export const Logo = forwardRef<HTMLAnchorElement, LogoProps>((props, ref) => {
       className={mergeClasses([logoClasses.root, className])}
       sx={[
         () => ({
-          width: 150,
+          width: 40,
           height: 40,
-          ...(!isSingle && { width: 102, height: 36 }),
+          ...(!isSingle && { width: 40, height: 36 }),
           ...(disabled && { pointerEvents: 'none' }),
         }),
         ...(Array.isArray(sx) ? sx : [sx]),

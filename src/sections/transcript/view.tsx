@@ -2,17 +2,17 @@
 
 import type { Theme, SxProps } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { DashboardContent } from 'src/layouts/dashboard';
-import { FormGrid, FormActions, FieldContainer } from './components';
+import { MainSection } from 'src/layouts/core';
+import { FormGrid, FormActions, FieldContainer } from './uploads';
 import MenuItem from '@mui/material/MenuItem';
 import { Form, Field } from 'src/components/hook-form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TranscriptSchema, TranscriptSchemaType } from './components/schema';
+import { TranscriptSchema, TranscriptSchemaType } from './uploads/schema';
 import { mimeTypes } from 'src/_mock/_map/mimeTypes';
 import { transcribe } from 'src/api/transcribe';
 import { useState } from 'react';
-import TranscribeTextView from './components/textview';
+import TranscribeTextView from './components/transript-view';
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import Button from '@mui/material/Button';
 import TranscribeAddLinkModal from './components/modal';
@@ -91,9 +91,7 @@ export function TranscriptView({ title = 'Blank', sx }: Props) {
   }
 
   const renderTranscriptUpload = () => (
-   
-        <Form methods={methods} onSubmit={onSubmit} >
-        
+       <Form methods={methods} onSubmit={onSubmit} >
           <FormGrid>
             <FieldContainer label="Audio / Video File">
               <Box sx={{display: "flex", justifyContent: "right"}}>
@@ -137,16 +135,16 @@ export function TranscriptView({ title = 'Blank', sx }: Props) {
             disabled={Object.keys(errors).length === 0}
             onReset={() => reset()}
           />
-        </Form>
+      </Form>
   );
 
   return (
-    <DashboardContent maxWidth="xl">
+    <MainSection sx={{ pl: 5, pr:5}}>
       <Typography variant="h4">{title}</Typography>
 
       {transcription ? <TranscribeTextView transcription={transcription} /> : renderTranscriptUpload()}
 
       <TranscribeAddLinkModal open={openModal} setOpen={setOpenModal} sx={sx} handleFileImport={handleFileImport} />
-    </DashboardContent>
+    </MainSection>
   );
 }
